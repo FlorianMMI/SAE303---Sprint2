@@ -3,7 +3,7 @@
     "DonneesCandidats": { "NumeroDossierCandidat": 1, "Sexe": "Masculin" },
     "Scolarite": [
       {
-        "AnneeScolaireCode": 0,
+        "AnneeScolaireCode": 0, 
         "AnneeScolaireLibelle": "2023-2024",
         "UAIEtablissementorigine": "0240035H",
         "NomEtablissementOrigine": "Lycée Pre De Cordy",
