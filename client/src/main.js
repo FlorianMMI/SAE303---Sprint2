@@ -32,9 +32,12 @@ C.loadLyceeCandidat = async function(){
             
             if (Candidat.Scolarite[0].UAIEtablissementorigine == lycee.numero_uai){
                 if (data.includes(lycee)) {
-
+                    lycee.candidats.push(Candidat);
+                    console.log(lycee.candidats)
                 }
                 else {
+                    lycee.candidats = [Candidat];
+                    console.log(lycee.candidats)
                     data.push(lycee);
                 }
                 
@@ -65,6 +68,7 @@ V.renderHeader= function(){
 V.rendermap = function(Lycees){
     
     renderlycee(Lycees);
+    
 }
 
 
