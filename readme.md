@@ -23,23 +23,8 @@ git pull origin iterationX
 
 
 
-Commande SQL : 
+Reponse : 
 
-Itearation 4 
+Itération 3 --> La carte appartient à la vue 
 
-SELECT 
-    p.product_name,
-    oi.product_id,
-    SUM(oi.quantity) AS total_sales
-FROM 
-    OrderItems oi
-JOIN 
-    Orders o ON oi.order_id = o.id
-JOIN 
-    Products p ON oi.product_id = p.id
-WHERE 
-    o.order_date >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
-GROUP BY 
-    oi.product_id, p.product_name
-ORDER BY 
-    total_sales DESC
+Itération 4 --> Visuellement illisible et impraticable

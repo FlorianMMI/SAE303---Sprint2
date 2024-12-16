@@ -11,8 +11,23 @@ let C = {};
 
 C.init = async function(){
     V.init();
+    C.loadMarkerLycee();
     console.log(Candidats.getAll());
     console.log(Lycees.getAll());
+}
+
+C.loadMarkerLycee = function(){
+
+    Lycees.getAll().forEach((lycee, index) => {
+        if (index === 0) {
+            return;
+        }
+
+        if (lycee.latitude === "" || lycee.longitude === "") {
+            return;
+        }
+        V.renderMarkerLycee(lycee);
+    });
 }
 
 
@@ -39,6 +54,9 @@ V.loadmap = function(){
     }).addTo(map);
 } // la map appartient au modèle de la vue car elle est l'affichage de la vue
 
+V.renderMarkerLycee = function(lycee){
+    L.marker([parseFloat(lycee.latitude), parseFloat(lycee.longitude)]).addTo(map);
+};
 
 
 
