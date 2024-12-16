@@ -12,7 +12,14 @@ var map = L.map('map').setView([45.838643, 1.261065], 13);
     }).addTo(map);
 
 
+let markers = [];
+
 let renderlycee = function(data) {
+    markers = []; // Clear existing markers
+
+    departmentCluster.clearLayers();
+    cityCluster.clearLayers();
+    lyceeCluster.clearLayers();
 
     data.forEach((lycee, index) => {
         let nbcandidat = lycee.candidats.length;
@@ -25,11 +32,10 @@ let renderlycee = function(data) {
             return;
         }
         
-        L.marker([parseFloat(lycee.latitude), parseFloat(lycee.longitude)]).addTo(map)
-            .bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${nbcandidat}`)
+        markers.push(L.marker([parseFloat(lycee.latitude), parseFloat(lycee.longitude)])
+            .bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${nbcandidat}`));
            
     })
-
 }
 
 
@@ -60,15 +66,12 @@ const addMarkerToCluster = (marker) => {
     lyceeCluster.addLayer(marker);
 };
 
-// renderlycee = function(data) {
-//     data.forEach((lycee) => {
-//         if (lycee.latitude && lycee.longitude) {
-//             const marker = L.marker([parseFloat(lycee.latitude), parseFloat(lycee.longitude)])
-//                 .bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${lycee.candidats.length}`);
-//             addMarkerToCluster(marker);
-//         }
-//     });
-// };
+let rendercluster = function() {
+    markers.forEach((marker) => {
+        addMarkerToCluster(marker);
+    });
+};
 
 
 export { renderlycee };
+export { rendercluster };

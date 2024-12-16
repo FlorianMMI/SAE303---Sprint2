@@ -2,7 +2,7 @@ import { HeaderView } from "./ui/header/index.js";
 import { Candidats } from "./data/data-candidats.js";
 
 import { Lycees } from "./data/data-lycees.js";
-import { renderlycee } from "./ui/RenderLycee/index.js";
+import { rendercluster, renderlycee } from "./ui/RenderLycee/index.js";
 
 import './index.css';
 import L from 'leaflet';
@@ -66,9 +66,8 @@ V.renderHeader= function(){
 }
 
 V.rendermap = function(Lycees){
-    
     renderlycee(Lycees);
-    
+    rendercluster();
 }
 
 
