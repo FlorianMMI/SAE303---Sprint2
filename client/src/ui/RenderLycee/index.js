@@ -23,7 +23,7 @@ let renderlycee = function(lycee) {
         }
         
         let marker = L.marker([parseFloat(lycee.latitude), parseFloat(lycee.longitude)]);
-            marker.bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${lycee.candidats.length}`);
+            marker.bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${lycee.candidats.length}<br>`);
             return marker
         
 
