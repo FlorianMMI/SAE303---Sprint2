@@ -23,7 +23,20 @@ let renderlycee = function(lycee) {
         }
         
         let marker = L.marker([parseFloat(lycee.latitude), parseFloat(lycee.longitude)]);
-            marker.bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${lycee.candidats.length}<br>`);
+        let fillieres = {};
+            lycee.candidats.forEach(candidat => {
+                let code = candidat.Baccalaureat.SerieDiplomeCode;
+                fillieres[code] = (fillieres[code] || 0) + 1;
+            });
+            let fillieresHtml = '<br>Filières:<br><ul>';
+            for (let [filiere, count] of Object.entries(fillieres)) {
+                fillieresHtml += `<li>${filiere}: ${count} candidats</li>`;
+            }
+            fillieresHtml += '</ul>';
+            fillieresHtml
+            
+            marker.bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${lycee.candidats.length}<br> ${fillieresHtml}<br>`);
+            
             return marker
         
 
@@ -38,16 +51,40 @@ let rendercluster = function (data){
 
     cluster.on('clusterclick', function (a) {
         let totalCandidates = 0;
+        let streams = { 'Générale': 0, 'STI2D': 0, 'Autre': 0 };
+
+        
+
+
+
+
         a.layer.getAllChildMarkers().forEach(marker => {
             const popupContent = marker.getPopup().getContent();
             const match = popupContent.match(/Nombre de candidats : (\d+)/);
             if (match) {
                 totalCandidates += parseInt(match[1], 10);
             }
+            const filiereMatch = popupContent.match(/Filières:<br><ul>(.*?)<\/ul>/);
+            if (filiereMatch) {
+                const items = filiereMatch[1].split('<li>').slice(1);
+                items.forEach(item => {
+                    const [filiere, count] = item.replace('</li>', '').split(': ');
+                    if (filiere == 'STI2D' || filiere == 'Générale' ) {
+                        streams[filiere] += parseInt(count.replace(' candidats', ''), 10);
+                    
+                    } else {
+                        streams['Autre'] += parseInt(count.replace(' candidats', ''), 10);
+                    }
+                });
+            }
         });
+        let streamDetails = '';
+        for (let [filiere, count] of Object.entries(streams)) {
+            streamDetails += `${filiere}: ${count} candidats<br>`;
+        }
         L.popup()
             .setLatLng(a.latlng)
-            .setContent(`Nombre total de candidats : ${totalCandidates}`)
+            .setContent(`Nombre total de candidats : ${totalCandidates}<br>${streamDetails}`)
             .openOn(map);
     });
     

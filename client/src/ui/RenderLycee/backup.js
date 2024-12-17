@@ -28,7 +28,7 @@ let renderlycee = function(lycee) {
         }
         
         markers.push(L.marker([parseFloat(lycee.latitude), parseFloat(lycee.longitude)])
-            .bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${lycee.candidats.length}`));
+            .bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${lycee.candidats.length}<br>fillière : ${lycee.candidats[0].Baccalaureat[0].SerieDiplomeLibelle}<br>`));
         
 
 }
@@ -77,48 +77,114 @@ let rendercluster = function() {
 departmentCluster.on('clusterclick', function (a) {
     const markers = a.layer.getAllChildMarkers();
     let totalCandidats = 0;
+    let generale = 0;
+    let sti2d = 0;
+    let autre = 0;
+
     markers.forEach(marker => {
         const popupContent = marker.getPopup().getContent();
-        const match = popupContent.match(/Nombre de candidats : (\d+)/);
-        if (match) {
-            totalCandidats += parseInt(match[1], 10);
+        const nombreMatch = popupContent.match(/Nombre de candidats : (\d+)/);
+        const filiereMatch = popupContent.match(/fillière\s*:\s*(\w+)/i);
+
+        if (nombreMatch) {
+            const nombre = parseInt(nombreMatch[1], 10);
+            totalCandidats += nombre;
+
+            const filiere = filiereMatch ? filiereMatch[1].toLowerCase() : 'autre';
+            if (filiere === 'générale') {
+                generale += nombre;
+            } else if (filiere === 'sti2d') {
+                sti2d += nombre;
+            } else {
+                autre += nombre;
+            }
         }
     });
+
     L.popup()
         .setLatLng(a.latlng)
-        .setContent(`Nombre total de candidats : ${totalCandidats}`)
+        .setContent(
+            `Nombre total de candidats : ${totalCandidats}<br>` +
+            `Générale : ${generale}<br>` +
+            `STI2D : ${sti2d}<br>` +
+            `Autre : ${autre}`
+        )
         .openOn(map);
 });
 
 cityCluster.on('clusterclick', function (a) {
     const markers = a.layer.getAllChildMarkers();
     let totalCandidats = 0;
+    let generale = 0;
+    let sti2d = 0;
+    let autre = 0;
+
     markers.forEach(marker => {
         const popupContent = marker.getPopup().getContent();
-        const match = popupContent.match(/Nombre de candidats : (\d+)/);
-        if (match) {
-            totalCandidats += parseInt(match[1], 10);
+        const nombreMatch = popupContent.match(/Nombre de candidats : (\d+)/);
+        const filiereMatch = popupContent.match(/fillière\s*:\s*(\w+)/i);
+
+        if (nombreMatch) {
+            const nombre = parseInt(nombreMatch[1], 10);
+            totalCandidats += nombre;
+
+            const filiere = filiereMatch ? filiereMatch[1].toLowerCase() : 'autre';
+            if (filiere === 'générale') {
+                generale += nombre;
+            } else if (filiere === 'sti2d') {
+                sti2d += nombre;
+            } else {
+                autre += nombre;
+            }
         }
     });
+
     L.popup()
         .setLatLng(a.latlng)
-        .setContent(`Nombre total de candidats : ${totalCandidats}`)
+        .setContent(
+            `Nombre total de candidats : ${totalCandidats}<br>` +
+            `Générale : ${generale}<br>` +
+            `STI2D : ${sti2d}<br>` +
+            `Autre : ${autre}`
+        )
         .openOn(map);
 });
 
 lyceeCluster.on('clusterclick', function (a) {
     const markers = a.layer.getAllChildMarkers();
     let totalCandidats = 0;
+    let generale = 0;
+    let sti2d = 0;
+    let autre = 0;
+
     markers.forEach(marker => {
         const popupContent = marker.getPopup().getContent();
-        const match = popupContent.match(/Nombre de candidats : (\d+)/);
-        if (match) {
-            totalCandidats += parseInt(match[1], 10);
+        const nombreMatch = popupContent.match(/Nombre de candidats : (\d+)/);
+        const filiereMatch = popupContent.match(/fillière\s*:\s*(\w+)/i);
+
+        if (nombreMatch) {
+            const nombre = parseInt(nombreMatch[1], 10);
+            totalCandidats += nombre;
+
+            const filiere = filiereMatch ? filiereMatch[1].toLowerCase() : 'autre';
+            if (filiere === 'générale') {
+                generale += nombre;
+            } else if (filiere === 'sti2d') {
+                sti2d += nombre;
+            } else {
+                autre += nombre;
+            }
         }
     });
+
     L.popup()
         .setLatLng(a.latlng)
-        .setContent(`Nombre total de candidats : ${totalCandidats}`)
+        .setContent(
+            `Nombre total de candidats : ${totalCandidats}<br>` +
+            `Générale : ${generale}<br>` +
+            `STI2D : ${sti2d}<br>` +
+            `Autre : ${autre}`
+        )
         .openOn(map);
 });
 

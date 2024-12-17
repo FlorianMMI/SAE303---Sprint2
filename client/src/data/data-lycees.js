@@ -56,6 +56,7 @@ Lycees.getLyceecandidat = function(){
 
 
             let lycee = Lycees.binarySearch(UAI);
+            
             if (lycee){
                 if (!lycee.candidats){
                     lycee.candidats = [];
@@ -65,7 +66,9 @@ Lycees.getLyceecandidat = function(){
 
     }
 
-    
+    console.log("ceci est data dans datalycee", data);
+    data = data.filter(lycee => lycee.candidats && lycee.candidats.length > 0);
+
     return data;
 }
 
