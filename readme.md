@@ -28,3 +28,15 @@ Reponse :
 Itération 3 --> La carte appartient à la vue 
 
 Itération 4 --> Visuellement illisible et impraticable
+
+
+
+
+
+
+
+
+
+Itération suivante prbkm : 
+
+1-er solution : 100% --> donnée des code postaux avec coordonnée de chaque ville ou par une api (2nd solutions)

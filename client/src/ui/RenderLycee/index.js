@@ -32,8 +32,24 @@ let renderlycee = function(lycee) {
 let rendercluster = function (data){
     
     let cluster = L.markerClusterGroup({
-        zoomToBoundsOnClick: false}
-    );
+        zoomToBoundsOnClick: false,
+        disableClusteringAtZoom: 13,
+    });
+
+    cluster.on('clusterclick', function (a) {
+        let totalCandidates = 0;
+        a.layer.getAllChildMarkers().forEach(marker => {
+            const popupContent = marker.getPopup().getContent();
+            const match = popupContent.match(/Nombre de candidats : (\d+)/);
+            if (match) {
+                totalCandidates += parseInt(match[1], 10);
+            }
+        });
+        L.popup()
+            .setLatLng(a.latlng)
+            .setContent(`Nombre total de candidats : ${totalCandidates}`)
+            .openOn(map);
+    });
     
     for (let lycee of data){
         if (lycee.candidats){
