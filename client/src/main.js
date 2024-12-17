@@ -13,41 +13,20 @@ import 'leaflet/dist/leaflet.css';
 let C = {};
 
 C.init = async function(){
-    await C.loadLyceeCandidat()
-    console.log( await C.loadLyceeCandidat());
-    V.init();
+    let datalycee =  Lycees.getLyceecandidat();
+    console.log(datalycee);
+    V.init(datalycee);
 }
 
 
-C.loadLyceeCandidat = async function(){
-    let Lycee =  Lycees.getAll();
-    let candidats = Candidats.getAll();
 
-    let  data = [];
 
+// C.loadLyceeCandidat = async function(){
     
+//     let data = Lycees.getLyceecandidat();
+//     V.rendermap(data);
 
-    for (let Candidat of candidats){
-        for (let lycee of Lycee){
-            
-            if (Candidat.Scolarite[0].UAIEtablissementorigine == lycee.numero_uai){
-                if (data.includes(lycee)) {
-                    lycee.candidats.push(Candidat);
-                    console.log(lycee.candidats)
-                }
-                else {
-                    lycee.candidats = [Candidat];
-                    console.log(lycee.candidats)
-                    data.push(lycee);
-                }
-                
-            }
-        }
-    }
-
-    V.rendermap(data);
-
-}
+// }
 
 
 let V = {
@@ -55,8 +34,9 @@ let V = {
     map : document.querySelector("#map")
 };
 
-V.init = function(){
+V.init = function(datalycee){
     V.renderHeader();
+    V.rendercluster(datalycee);
     
     
 }
@@ -65,9 +45,13 @@ V.renderHeader= function(){
     V.header.innerHTML = HeaderView.render();
 }
 
+V.rendercluster= function (datalycees){
+    rendercluster(datalycees);
+}
+
 V.rendermap = function(Lycees){
-    renderlycee(Lycees);
-    rendercluster();
+    // renderlycee(Lycees);
+    
 }
 
 
