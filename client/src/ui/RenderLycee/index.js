@@ -30,7 +30,27 @@ let renderlycee = function(lycee) {
             });
             let fillieresHtml = '<br>Filières:<br><ul>';
             for (let [filiere, count] of Object.entries(fillieres)) {
-                fillieresHtml += `<li>${filiere}: ${count} candidats</li>`;
+                if (filiere === 'Générale' ) {
+                    fillieresHtml += `<li>${filiere}: ${count} candidats</li>`;
+                } 
+                
+                if (filiere === 'STI2D' ) {
+                    fillieresHtml += `<li>${filiere}: ${count} candidats</li>`;
+                }
+                
+                else {
+                    // Aggregate all 'Autre' filiere counts into one
+                    if (!fillieresHtml.includes('Autre')) {
+                        fillieresHtml += `<li>Autre: ${count} candidats</li>`;
+                    } else {
+                        const regex = /<li>Autre: (\d+) candidats<\/li>/;
+                        const match = fillieresHtml.match(regex);
+                        if (match) {
+                            const newCount = parseInt(match[1], 10) + count;
+                            fillieresHtml = fillieresHtml.replace(regex, `<li>Autre: ${newCount} candidats</li>`);
+                        }
+                    }
+                }
             }
             fillieresHtml += '</ul>';
             fillieresHtml
