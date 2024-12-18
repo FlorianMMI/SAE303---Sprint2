@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import { exp } from '@amcharts/amcharts5/.internal/core/util/Ease';
 
 
 
@@ -61,6 +62,10 @@ let renderlycee = function(lycee) {
         
 
 }
+
+
+let value = [];
+
 
 let rendercluster = function (data){
     
@@ -121,7 +126,8 @@ let rendercluster = function (data){
 }
 
 
-
+let test = 0
 
 export { renderlycee };
 export { rendercluster };
+export { test };

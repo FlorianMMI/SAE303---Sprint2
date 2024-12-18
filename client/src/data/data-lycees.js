@@ -45,7 +45,6 @@ Lycees.getLyceecandidat = function(){
     }
     data.sort(compare);
 
-    console.log(data);
     for (let Candidat of candidats){
 
         let UAI;
@@ -61,7 +60,7 @@ Lycees.getLyceecandidat = function(){
 
 
             let lycee = Lycees.binarySearch(UAI);
-            console.log("ceci est lycee dans datalycee", Candidat.Baccalaureat.TypeDiplomeCode);
+            
             if (lycee){
                 if (!lycee.candidats){
                     lycee.candidats = [];
@@ -96,15 +95,52 @@ Lycees.getLyceecandidat = function(){
     
     data = data.filter(lycee => lycee.candidats && lycee.candidats.length > 0);
     data = data.concat(villes);
-    console.log("ceci est data dans datalycee", data);
+    
     return data;
 }
 
 
 
 
-Lycees.getLyceePostaux = function() {
+Lycees.getdpt = function() {
+    let dptMap = new Map();
+    for (let lycee of Lycees.getLyceecandidat()){
+        console.log("ça me soule " , lycee);
+        let codePostal;
+        if (lycee.code_postal){
+            codePostal = lycee.code_postal.slice(0, 2) + "000";
+        }
+        else {
+            codePostal = lycee.code_postal;
+        }
+        let departement = CodePostaux.binarySearch(codePostal);
+        let libelle = departement ? departement.libelle_departement : lycee.libelle_departement; // Use the department name from the postal code if available, otherwise use the department name from the lycee data
 
+        if (!dptMap.has(libelle)){
+            dptMap.set(libelle, {
+                libelle_departement: libelle,
+                candidatsGenerale: 0,
+                candidatsSTI2D: 0,
+                candidatsAutre: 0,
+                candidatsPostBac: 0
+            });
+        }
+
+        let dept = dptMap.get(libelle);
+
+        for (let candidat of lycee.candidats) {
+            if (candidat.Baccalaureat.SerieDiplomeCode === 'Générale') {
+                dept.candidatsGenerale++;
+            } else if (candidat.Baccalaureat.SerieDiplomeCode === 'STI2D') {
+                dept.candidatsSTI2D++;
+            } else {
+                dept.candidatsAutre++;
+            }
+        }
+    }
+
+    let dpt = Array.from(dptMap.values());
+    return dpt;
 }
 
 
