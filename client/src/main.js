@@ -2,6 +2,7 @@ import { HeaderView } from "./ui/header/index.js";
 import { Candidats } from "./data/data-candidats.js";
 
 import { Lycees } from "./data/data-lycees.js";
+import { CodePostaux } from "./data/data-postaux.js";
 import { rendercluster, renderlycee } from "./ui/RenderLycee/index.js";
 
 import './index.css';
@@ -14,7 +15,10 @@ let C = {};
 
 C.init = async function(){
     let datalycee =  Lycees.getLyceecandidat();
-    console.log(datalycee);
+    let tempPall = CodePostaux.getAll();
+    let temppostlat = CodePostaux.getPostlat();
+    // let temp = Lycees.getpostbac();
+    console.log(datalycee, tempPall, temppostlat);
     V.init(datalycee);
 }
 
