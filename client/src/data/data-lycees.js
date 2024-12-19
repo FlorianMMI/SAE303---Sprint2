@@ -95,7 +95,7 @@ Lycees.getLyceecandidat = function(){
     
     data = data.filter(lycee => lycee.candidats && lycee.candidats.length > 0);
     data = data.concat(villes);
-    
+    console.log ("Data dans getLyceecandidat", data);
     return data;
 }
 
@@ -105,7 +105,7 @@ Lycees.getLyceecandidat = function(){
 Lycees.getdpt = function() {
     let dptMap = new Map();
     for (let lycee of Lycees.getLyceecandidat()){
-        console.log("ça me soule " , lycee);
+        console.log ("Data dans getdpt", lycee);
         let codePostal;
         if (lycee.code_postal){
             codePostal = lycee.code_postal.slice(0, 2) + "000";
@@ -140,6 +140,12 @@ Lycees.getdpt = function() {
     }
 
     let dpt = Array.from(dptMap.values());
+    dpt.sort((a, b) => 
+        (a.candidatsGenerale + a.candidatsSTI2D + a.candidatsAutre + a.candidatsPostBac) -
+        (b.candidatsGenerale + b.candidatsSTI2D + b.candidatsAutre + b.candidatsPostBac)  
+        
+    );
+    console.log("ceci est dpt", dpt);
     return dpt;
 }
 

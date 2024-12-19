@@ -5,7 +5,7 @@ import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 
 import { Lycees } from "../../data/data-lycees.js";
 
-let graph = function(div){
+let graph = function(div, value){
 
 
     am5.ready(function() {
@@ -14,7 +14,7 @@ let graph = function(div){
         // Create root element
         // https://www.amcharts.com/docs/v5/getting-started/#Root_element
         var root = am5.Root.new(div);
-        
+
         var temp = Lycees.getdpt();
         
         var myTheme = am5.Theme.new(root);
@@ -51,15 +51,38 @@ let graph = function(div){
         
 
         var data = [];
-        for (let i = 0; i < temp.length; i++){
+        let otherDept = {
+            department: "Autre",
+            postBacs: 0,
+            general: 0,
+            sti2d: 0,
+            others: 0
+        };
 
-            data.push({
-                department: temp[i].libelle_departement,
-                postBacs: temp[i].candidatsPostBac,
-                general: temp[i].candidatsGenerale,
-                sti2d: temp[i].candidatsSTI2D,
-                others: temp[i].candidatsAutre
-            });
+        console.log("ceci est value", value);
+
+        for (let i = 0; i < temp.length; i++) {
+          console.log("ceci est temp", temp[i]);
+            const total = temp[i].candidatsPostBac + temp[i].candidatsGenerale + temp[i].candidatsSTI2D + temp[i].candidatsAutre;
+            
+            if (total < value) {
+                otherDept.postBacs += temp[i].candidatsPostBac;
+                otherDept.general += temp[i].candidatsGenerale;
+                otherDept.sti2d += temp[i].candidatsSTI2D;
+                otherDept.others += temp[i].candidatsAutre;
+            } else {
+                data.push({
+                    department: temp[i].libelle_departement,
+                    postBacs: temp[i].candidatsPostBac,
+                    general: temp[i].candidatsGenerale,
+                    sti2d: temp[i].candidatsSTI2D,
+                    others: temp[i].candidatsAutre
+                });
+            }
+        }
+
+        if (otherDept.postBacs || otherDept.general || otherDept.sti2d || otherDept.others) {
+            data.push(otherDept);
         }
 
         
@@ -150,7 +173,6 @@ let graph = function(div){
 
 } 
 
-import {test} from "../RenderLycee/index.js";
 
-console.log(test);
+
 export { graph };

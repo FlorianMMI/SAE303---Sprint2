@@ -16,11 +16,22 @@ let C = {};
 
 C.init = async function(){
     let datalycee =  Lycees.getLyceecandidat();
-    console.log(Lycees.getdpt());  
+    C.handlerslider();
     V.init(datalycee);
 }
 
 
+C.handlerslider = function(){
+    let slider = document.querySelector("#slider");
+    slider.addEventListener("input", function(){
+        let value = slider.value;
+        document.querySelector('#slidercontainer').innerHTML = "";
+        let tmp = document.createElement("div");
+        tmp.id = "chartdiv";
+        document.querySelector('#slidercontainer').innerHTML = tmp.outerHTML;
+        V.rendergraph(value);
+    });
+}
 
 
 
@@ -47,8 +58,8 @@ V.rendercluster= function (datalycees){
     rendercluster(datalycees);
 }
 
-V.rendergraph = function(){
-    graph("chartdiv")
+V.rendergraph = function(value){
+    graph("chartdiv", value);
 }
 
 
