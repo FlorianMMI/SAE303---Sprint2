@@ -129,6 +129,9 @@ Lycees.getdpt = function() {
         let dept = dptMap.get(libelle);
 
         for (let candidat of lycee.candidats) {
+            if (candidat.Baccalaureat.TypeDiplomeLibelle === 'Baccalauréat obtenu') {
+                dept.candidatsPostBac++;
+            }
             if (candidat.Baccalaureat.SerieDiplomeCode === 'Générale') {
                 dept.candidatsGenerale++;
             } else if (candidat.Baccalaureat.SerieDiplomeCode === 'STI2D') {
