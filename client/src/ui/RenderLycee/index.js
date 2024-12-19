@@ -16,30 +16,31 @@ var map = L.map('map').setView([45.838643, 1.261065], 13);
 
 
 let renderlycee = function(lycee) {
+    if (lycee.latitude === "" || lycee.longitude === "") {
+        return;
+    }
     
-        
-        if (lycee.latitude === "" || lycee.longitude === "") {
-            return;
-        }
-        
-        let marker = L.marker([parseFloat(lycee.latitude), parseFloat(lycee.longitude)]);
-        let fillieres = {};
-            lycee.candidats.forEach(candidat => {
-                let code = candidat.Baccalaureat.SerieDiplomeCode;
-                fillieres[code] = (fillieres[code] || 0) + 1;
-            });
-            let fillieresHtml = '<br>Filières:<br><ul>';
-            for (let [filiere, count] of Object.entries(fillieres)) {
-                fillieresHtml += `<li>${filiere}: ${count} candidats</li>`;
-            }
-            fillieresHtml += '</ul>';
-            fillieresHtml
-            
-            marker.bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${lycee.candidats.length}<br> ${fillieresHtml}<br>`);
-            
-            return marker
-        
+    let marker = L.marker([parseFloat(lycee.latitude), parseFloat(lycee.longitude)]);
+    let fillieres = {};
+    let postbacCount = 0;
 
+    lycee.candidats.forEach(candidat => {
+        let code = candidat.Baccalaureat.SerieDiplomeCode;
+        fillieres[code] = (fillieres[code] || 0) + 1;
+        if (candidat.Baccalaureat.TypeDiplomeLibelle === 'Baccalauréat obtenu') {
+            postbacCount += 1;
+        }
+    });
+
+    let fillieresHtml = '<br>Filières:<br><ul>';
+    for (let [filiere, count] of Object.entries(fillieres)) {
+        fillieresHtml += `<li>${filiere}: ${count} candidats</li>`;
+    }
+    fillieresHtml += '</ul>';
+
+    marker.bindPopup(`<b>${lycee.appellation_officielle}</b><br>Nombre de candidats : ${lycee.candidats.length}<br>Postbac candidats : ${postbacCount}<br>${fillieresHtml}<br>`);
+    
+    return marker;
 }
 
 let rendercluster = function (data){
@@ -51,18 +52,18 @@ let rendercluster = function (data){
 
     cluster.on('clusterclick', function (a) {
         let totalCandidates = 0;
+        let totalPostbacs = 0;
         let streams = { 'Générale': 0, 'STI2D': 0, 'Autre': 0 };
-
-        
-
-
-
 
         a.layer.getAllChildMarkers().forEach(marker => {
             const popupContent = marker.getPopup().getContent();
             const match = popupContent.match(/Nombre de candidats : (\d+)/);
             if (match) {
                 totalCandidates += parseInt(match[1], 10);
+            }
+            const postbacMatch = popupContent.match(/Postbac candidats : (\d+)/);
+            if (postbacMatch) {
+                totalPostbacs += parseInt(postbacMatch[1], 10);
             }
             const filiereMatch = popupContent.match(/Filières:<br><ul>(.*?)<\/ul>/);
             if (filiereMatch) {
@@ -84,7 +85,7 @@ let rendercluster = function (data){
         }
         L.popup()
             .setLatLng(a.latlng)
-            .setContent(`Nombre total de candidats : ${totalCandidates}<br>${streamDetails}`)
+            .setContent(`Nombre total de candidats : ${totalCandidates}<br>Nombre total de postbac : ${totalPostbacs}<br>${streamDetails}`)
             .openOn(map);
     });
     
