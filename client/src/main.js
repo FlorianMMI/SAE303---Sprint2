@@ -1,8 +1,7 @@
 import { HeaderView } from "./ui/header/index.js";
-import { Candidats } from "./data/data-candidats.js";
 
 import { Lycees } from "./data/data-lycees.js";
-import { CodePostaux } from "./data/data-postaux.js";
+
 import { rendercluster, renderlycee } from "./ui/RenderLycee/index.js";
 import { graph } from "./ui/Graph/graph.js";
 
@@ -34,6 +33,12 @@ C.handlerslider = function(datadpt){
 
 
 
+
+/**
+ * @namespace V
+ * @property {HTMLElement} header - Élément DOM représentant l'en-tête de la page.
+ * @property {HTMLElement} map - Élément DOM représentant la carte de la page.
+ */
 
 let V = {
     header: document.querySelector("#header"),

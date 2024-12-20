@@ -3,35 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAE3.DWeb-DI.03 base code</title>
-    <link rel="stylesheet" href="./src/index.css">
-    
-    
-    
+    <title>SAE3.DWeb-DI.03 Base Code</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-    <section id="header"></section>
-    <script type="module" src="src/main.js"></script>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <header id="header" class="bg-blue-600 text-white p-4">
+        <h1 class="text-xl">Header Section</h1>
+    </header>
 
-    <container class = "flex flex-row">
-        <div  id="map"></div>
-        <div id = "div">
+    <main class="flex flex-col  flex-1">
+
+        <div class="flex items-center justify-center mb-4">
+            <input type="range" id="slider" min="0" max="100" value="3" class="w-1/2 mr-4">
+            <p class="text-lg font-semibold text-blue-600">Seuil fixé : <span id="sliderValue">3</span></p>
+        </div>
+
+        <container class ="flex ">
+        <div id="map" class="w-2/3 m-4"></div>
+        <div id="div" class="w-1/3 m-4 bg-white shadow">
             
-            <div id = "slidercontainer">
-                <div id="chartdiv"></div>
+            
+            <div id="slidercontainer" class="mb-4">
+                <div id="chartdiv" class="h-64 bg-gray-200"></div>
             </div>
             
-            <input type="range" id="slider" min="0" max="100" value="3">
-            
-        </div>
         
-    </container>
+        </container>
+            
 
-    
-    
+            <script>
+                const slider = document.getElementById('slider');
+                const sliderValue = document.getElementById('sliderValue');
 
+                slider.addEventListener('input', function() {
+                    sliderValue.textContent = slider.value;
+                });
+            </script>
+        </div>
+    </main>
 
-    
-    <script type = "module" src="src/main.js"></script>
+    <script type="module" src="src/main.js"></script>
 </body>
 </html>

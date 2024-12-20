@@ -46,6 +46,19 @@ CodePostaux.binarySearch = function(code) {
 CodePostaux.getPostlat = function(){
 
     
+    /**
+     * Transforme les données de la commune en un tableau d'objets avec latitude et longitude.
+     *
+     * @param {Array} data - Tableau d'objets contenant les informations des communes.
+     * @param {string} data[].nom_de_la_commune - Nom de la commune.
+     * @param {string} data[].code_postal - Code postal de la commune.
+     * @param {string} data[]._geopoint - Coordonnées géographiques de la commune sous forme de chaîne de caractères "latitude,longitude".
+     * @returns {Array} Tableau d'objets contenant les informations des communes avec latitude et longitude.
+     * @returns {string} temp[].nom_de_la_commune - Nom de la commune.
+     * @returns {string} temp[].code_postal - Code postal de la commune.
+     * @returns {number} temp[].latitude - Latitude de la commune.
+     * @returns {number} temp[].longitude - Longitude de la commune.
+     */
     let temp = data.map(({ nom_de_la_commune, code_postal, _geopoint }) => {
         const [latitude, longitude] = _geopoint.split(',');
         return {

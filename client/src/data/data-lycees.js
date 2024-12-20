@@ -35,6 +35,15 @@ Lycees.getLyceecandidat = function(){
     
     
 
+    /**
+     * Fonction de comparaison pour trier des objets en fonction de leur propriété `numero_uai`.
+     *
+     * @param {Object} a - Premier objet à comparer.
+     * @param {Object} b - Deuxième objet à comparer.
+     * @returns {number} - Retourne -1 si `a.numero_uai` est inférieur à `b.numero_uai`, 
+     *                     1 si `a.numero_uai` est supérieur à `b.numero_uai`.
+     *                     Si les deux valeurs sont égales, la fonction ne retourne rien (ce qui équivaut à 0).
+     */
     let compare = function(a, b){
         if (a.numero_uai < b.numero_uai){
             return -1;

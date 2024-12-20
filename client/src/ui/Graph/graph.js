@@ -58,7 +58,7 @@ let graph = function(div, value, temp){
     
         console.log("ceci est value", value);
     
-        for (let i = 0; i < temp.length; i++) {
+        for (let i = 0; i < temp.length ; i++) {
           console.log("ceci est temp", temp[i]);
             const total = temp[i].candidatsPostBac + temp[i].candidatsGenerale + temp[i].candidatsSTI2D + temp[i].candidatsAutre;
             
