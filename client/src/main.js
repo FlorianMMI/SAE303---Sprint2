@@ -16,20 +16,17 @@ let C = {};
 
 C.init = async function(){
     let datalycee =  Lycees.getLyceecandidat();
-    C.handlerslider();
-    V.init(datalycee);
+    let datadpt = Lycees.getdpt(datalycee);
+    C.handlerslider(datadpt);
+    V.init(datalycee, datadpt);
 }
 
 
-C.handlerslider = function(){
+C.handlerslider = function(datadpt){
     let slider = document.querySelector("#slider");
-    slider.addEventListener("input", function(){
+    slider.addEventListener("change", function(){
         let value = slider.value;
-        document.querySelector('#slidercontainer').innerHTML = "";
-        let tmp = document.createElement("div");
-        tmp.id = "chartdiv";
-        document.querySelector('#slidercontainer').innerHTML = tmp.outerHTML;
-        V.rendergraph(value);
+        V.rendergraph(value, datadpt);
     });
 }
 
@@ -43,10 +40,10 @@ let V = {
     map : document.querySelector("#map")
 };
 
-V.init = function(datalycee){
+V.init = function(datalycee, datadpt){
     V.renderHeader();
     V.rendercluster(datalycee);
-    V.rendergraph();
+    V.rendergraph(3, datadpt);
     
 }
 
@@ -56,10 +53,11 @@ V.renderHeader= function(){
 
 V.rendercluster= function (datalycees){
     rendercluster(datalycees);
+    console.log("ceci est datalycee", datalycees);
 }
 
-V.rendergraph = function(value){
-    graph("chartdiv", value);
+V.rendergraph = function(value, datadpt){
+    graph("chartdiv", value, datadpt);
 }
 
 

@@ -102,9 +102,10 @@ Lycees.getLyceecandidat = function(){
 
 
 
-Lycees.getdpt = function() {
+Lycees.getdpt = function(temp) {
     let dptMap = new Map();
-    for (let lycee of Lycees.getLyceecandidat()){
+    
+    for (let lycee of temp){
         console.log ("Data dans getdpt", lycee);
         let codePostal;
         if (lycee.code_postal){
@@ -129,6 +130,9 @@ Lycees.getdpt = function() {
         let dept = dptMap.get(libelle);
 
         for (let candidat of lycee.candidats) {
+            if (candidat.Baccalaureat.TypeDiplomeLibelle === 'Baccalauréat obtenu') {
+                dept.candidatsPostBac++;
+            } else
             if (candidat.Baccalaureat.SerieDiplomeCode === 'Générale') {
                 dept.candidatsGenerale++;
             } else if (candidat.Baccalaureat.SerieDiplomeCode === 'STI2D') {

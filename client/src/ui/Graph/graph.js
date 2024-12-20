@@ -2,20 +2,23 @@ import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 
-
 import { Lycees } from "../../data/data-lycees.js";
 
-let graph = function(div, value){
+let root; // Variable pour stocker l'instance root
 
+let graph = function(div, value, temp){
+
+    // Disposer de l'ancien graphique si existant
+    if (root) {
+        root.dispose();
+    }
 
     am5.ready(function() {
 
+        // Créer l'élément root
+        root = am5.Root.new(div);
 
-        // Create root element
-        // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-        var root = am5.Root.new(div);
-
-        var temp = Lycees.getdpt();
+        console.log("ceci est root", temp);
         
         var myTheme = am5.Theme.new(root);
         
@@ -23,17 +26,13 @@ let graph = function(div, value){
           strokeOpacity: 0.1
         });
         
-        
-        // Set themes
-        // https://www.amcharts.com/docs/v5/concepts/themes/
+        // Définir les thèmes
         root.setThemes([
           am5themes_Animated.new(root),
           myTheme
         ]);
         
-        
-        // Create chart
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/
+        // Créer le graphique
         var chart = root.container.children.push(am5xy.XYChart.new(root, {
           panX: false,
           panY: false,
@@ -43,13 +42,11 @@ let graph = function(div, value){
           layout: root.verticalLayout
         }));
         
-        // Add scrollbar
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+        // Ajouter la barre de défilement
         chart.set("scrollbarY", am5.Scrollbar.new(root, {
           orientation: "vertical"
         }));
         
-
         var data = [];
         let otherDept = {
             department: "Autre",
@@ -58,9 +55,9 @@ let graph = function(div, value){
             sti2d: 0,
             others: 0
         };
-
+    
         console.log("ceci est value", value);
-
+    
         for (let i = 0; i < temp.length; i++) {
           console.log("ceci est temp", temp[i]);
             const total = temp[i].candidatsPostBac + temp[i].candidatsGenerale + temp[i].candidatsSTI2D + temp[i].candidatsAutre;
@@ -80,15 +77,12 @@ let graph = function(div, value){
                 });
             }
         }
-
+    
         if (otherDept.postBacs || otherDept.general || otherDept.sti2d || otherDept.others) {
             data.push(otherDept);
         }
-
         
-        
-        // Create axes
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+        // Créer les axes
         var yRenderer = am5xy.AxisRendererY.new(root, {});
         var yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
           categoryField: "department",
@@ -98,7 +92,7 @@ let graph = function(div, value){
         
         yRenderer.grid.template.setAll({
           location: 1
-        })
+        });
         
         yAxis.data.setAll(data);
         
@@ -111,16 +105,13 @@ let graph = function(div, value){
           })
         }));
         
-        // Add legend
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+        // Ajouter la légende
         var legend = chart.children.push(am5.Legend.new(root, {
           centerX: am5.p50,
           x: am5.p50
         }));
         
-        
-        // Add series
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+        // Ajouter les séries
         function makeSeries(name, fieldName) {
           var series = chart.series.push(am5xy.ColumnSeries.new(root, {
             name: name,
@@ -138,8 +129,7 @@ let graph = function(div, value){
           });
           series.data.setAll(data);
         
-          // Make stuff animate on load
-          // https://www.amcharts.com/docs/v5/concepts/animations/
+          // Animer les séries au chargement
           series.appear();
         
           series.bullets.push(function () {
@@ -162,17 +152,10 @@ let graph = function(div, value){
         makeSeries("STI2D", "sti2d");
         makeSeries("Others", "others");
         
+        // Animer le graphique au chargement
+        // chart.appear(1000, 100);
         
-        // Make stuff animate on load
-        // https://www.amcharts.com/docs/v5/concepts/animations/
-        chart.appear(1000, 100);
-        
-        }); // end am5.ready()
-
-
-
-} 
-
-
-
+    }); // fin am5.ready()
+}
+ 
 export { graph };
